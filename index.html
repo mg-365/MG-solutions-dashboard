@@ -68,7 +68,7 @@
             <h2>Input Keywords</h2>
             <label for="keywords">Enter your main keywords:</label>
             <input type="text" id="keywords" placeholder="e.g. diet, skincare, supplement">
-            <button onclick="fetchKeywordInsights(document.getElementById('keywordInput').value)">Generate Analysis</button>
+            <button onclick="fetchKeywordInsights()">Generate Analysis</button>
         </div>
         <div class="panel" id="results">
             <h2>Keyword Insights</h2>
@@ -105,34 +105,41 @@
 
 
 <script>
-async function fetchKeywordInsights(keyword) {
+async function fetchKeywordInsights() {
+    const keyword = document.getElementById("keywords").value;
+    const resultBox = document.getElementById("results");
+
+    if (!keyword.trim()) {
+        resultBox.innerHTML = "<h2>Keyword Insights</h2><p>Please enter keywords to analyze.</p>";
+        return;
+    }
+
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": "Bearer YOUR_API_KEY"  // 여기에 키 직접 쓰면 안됨❌
+            "Authorization": "Bearer YOUR_API_KEY"  // 아래 참고!
         },
         body: JSON.stringify({
             model: "gpt-3.5-turbo",
             messages: [{
                 role: "user",
-                content: `다음 키워드에 대해 관련 키워드 5개, CPC($), 블로그 글 수, 난이도 점수를 알려줘. 다음 형식으로 응답해줘: 
-                
-                키워드: diet
-                CPC: $1.25
-                Blog Volume: 11,000 posts
-                Entry Score: 0.81
+                content: `Please analyze related keywords for: ${keyword}
+Provide result in this format (5 keywords):
 
-                키워드: skincare ...
-                
-                키워드: ${keyword}`
+Keyword: diet
+CPC: $1.25
+Blog Volume: 11,000 posts
+Entry Score: 0.81`
             }]
         })
     });
 
     const data = await response.json();
     const text = data.choices?.[0]?.message?.content || "No result";
-    document.getElementById("result").innerText = text;
+
+    resultBox.innerHTML = `<h2>Keyword Insights</h2><pre>${text}</pre>`;
 }
+
 </script>
 
