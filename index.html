@@ -1,145 +1,116 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Related Keywords Analysis</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f6f9;
-        }
-        header {
-            background-color: #2d89ef;
-            color: white;
-            padding: 20px 30px;
-            font-size: 24px;
-        }
-        main {
-            display: flex;
-            padding: 30px;
-            gap: 20px;
-        }
-        .panel {
-            flex: 1;
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        h2 {
-            margin-top: 0;
-        }
-        label {
-            font-weight: bold;
-        }
-        input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0 20px 0;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-        button {
-            background-color: #2d89ef;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #1b65c2;
-        }
-        .keyword-item {
-            margin-bottom: 10px;
-        }
-        .keyword-item span {
-            font-weight: bold;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <title>Related Keywords Analysis</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f6f9;
+    }
+    header {
+      background-color: #2d89ef;
+      color: white;
+      padding: 20px 30px;
+      font-size: 24px;
+    }
+    main {
+      display: flex;
+      padding: 30px;
+      gap: 20px;
+    }
+    .panel {
+      flex: 1;
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    h2 {
+      margin-top: 0;
+    }
+    label {
+      font-weight: bold;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0 20px 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #2d89ef;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #1b65c2;
+    }
+    pre {
+      white-space: pre-wrap;
+      font-size: 14px;
+    }
+  </style>
 </head>
 <body>
-    <header>Related Keywords Analysis1</header>
-    <main>
-        <div class="panel">
-            <h2>Input Keywords</h2>
-            <label for="keywords">Enter your main keywords:</label>
-            <input type="text" id="keywords" placeholder="e.g. diet, skincare, supplement">
-            <button onclick="fetchKeywordInsights()">Generate Analysis</button>
-        </div>
-        <div class="panel" id="results">
-            <h2>Keyword Insights</h2>
-            <p>Please enter keywords and click 'Generate Analysis' to view results.</p>
-        </div>
-    </main>
+  <header>Related Keywords Analysis2</header>
+  <main>
+    <div class="panel">
+      <h2>Input Keywords</h2>
+      <label for="keywords">Enter your main keywords:</label>
+      <input type="text" id="keywords" placeholder="e.g. diet, skincare, supplement">
+      <button onclick="fetchKeywordInsights()">Generate Analysis</button>
+    </div>
+    <div class="panel" id="results">
+      <h2>Keyword Insights</h2>
+      <p>Please enter keywords and click 'Generate Analysis' to view results.</p>
+    </div>
+  </main>
 
-    <script>
-        function generateResults() {
-            const keywords = document.getElementById('keywords').value;
-            const resultBox = document.getElementById('results');
-            if (!keywords.trim()) {
-                resultBox.innerHTML = '<h2>Keyword Insights</h2><p>Please enter keywords to analyze.</p>';
-                return;
-            }
+  <script>
+    async function fetchKeywordInsights() {
+      const keyword = document.getElementById("keywords").value;
+      const resultBox = document.getElementById("results");
 
-            const kwList = keywords.split(',').map(k => k.trim()).filter(k => k);
-            let html = '<h2>Keyword Insights</h2>';
-            kwList.forEach((kw, i) => {
-                html += `
-                    <div class="keyword-item">
-                        <div><span>${i+1}. ${kw}</span></div>
-                        <div>Estimated CPC: $${(Math.random() * 2 + 0.3).toFixed(2)}</div>
-                        <div>Blog Volume: ${Math.floor(Math.random() * 5000)} posts</div>
-                        <div>Entry Score: ${(Math.random() * 10).toFixed(2)}</div>
-                    </div>
-                `;
-            });
-            resultBox.innerHTML = html;
-        }
-    </script>
-</body>
-</html>
-
-
-<script>
-async function fetchKeywordInsights() {
-    const keyword = document.getElementById("keywords").value;
-    const resultBox = document.getElementById("results");
-
-    if (!keyword.trim()) {
+      if (!keyword.trim()) {
         resultBox.innerHTML = "<h2>Keyword Insights</h2><p>Please enter keywords to analyze.</p>";
         return;
-    }
+      }
 
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      resultBox.innerHTML = "<h2>Keyword Insights</h2><p>Loading...</p>";
+
+      const response = await fetch("https://api.openai.com/v1/chat/completions", {
         method: "POST",
         headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer YOUR_API_KEY"  // 아래 참고!
+          "Content-Type": "application/json",
+          "Authorization": "ddddd"  // 여기에 본인 GPT API 키 넣기
         },
         body: JSON.stringify({
-            model: "gpt-3.5-turbo",
-            messages: [{
-                role: "user",
-                content: `Please analyze related keywords for: ${keyword}
+          model: "gpt-3.5-turbo",
+          messages: [{
+            role: "user",
+            content: `Please analyze related keywords for: ${keyword}
 Provide result in this format (5 keywords):
 
 Keyword: diet
 CPC: $1.25
 Blog Volume: 11,000 posts
 Entry Score: 0.81`
-            }]
+          }]
         })
-    });
+      });
 
-    const data = await response.json();
-    const text = data.choices?.[0]?.message?.content || "No result";
+      const data = await response.json();
+      const text = data.choices?.[0]?.message?.content || "No result found.";
 
-    resultBox.innerHTML = `<h2>Keyword Insights</h2><pre>${text}</pre>`;
-}
-
-</script>
-
+      resultBox.innerHTML = `<h2>Keyword Insights</h2><pre>${text}</pre>`;
+    }
+  </script>
+</body>
+</html>
