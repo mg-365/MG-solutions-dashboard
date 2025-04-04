@@ -52,9 +52,11 @@
     button:hover {
       background-color: #1b65c2;
     }
-    pre {
-      white-space: pre-wrap;
-      font-size: 14px;
+    .keyword-item {
+      margin-bottom: 15px;
+    }
+    .keyword-item span {
+      font-weight: bold;
     }
   </style>
 </head>
@@ -86,7 +88,7 @@
       resultBox.innerHTML = "<h2>Keyword Insights</h2><p>Loading...</p>";
 
       try {
-        const response = await fetch("/api/keywords", {
+        const response = await fetch("https://mg-solutions-dashboard.onrender.com/api/keywords", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
@@ -95,10 +97,26 @@
         });
 
         const data = await response.json();
-        const text = data.choices?.[0]?.message?.content || "No result found.";
 
-        resultBox.innerHTML = `<h2>Keyword Insights</h2><pre>${text}</pre>`;
+        if (!data.keywords || !Array.isArray(data.keywords)) {
+          throw new Error("Invalid response format");
+        }
+
+        let html = "<h2>Keyword Insights</h2>";
+        data.keywords.forEach((item, index) => {
+          html += `
+            <div class="keyword-item">
+              <div><span>${index + 1}. ${item.keyword}</span></div>
+              <div>CPC: ${item.cpc}</div>
+              <div>Blog Volume: ${item.volume} posts</div>
+              <div>Entry Score: ${item.score}</div>
+            </div>
+          `;
+        });
+
+        resultBox.innerHTML = html;
       } catch (err) {
+        console.error(err);
         resultBox.innerHTML = "<h2>Keyword Insights</h2><p>Error loading data.</p>";
       }
     }
