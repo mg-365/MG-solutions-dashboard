@@ -85,26 +85,13 @@
 
       resultBox.innerHTML = "<h2>Keyword Insights</h2><p>Loading...</p>";
 
-      const response = await fetch("https://api.openai.com/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": "ddddd"  // 여기에 본인 GPT API 키 넣기
-        },
-        body: JSON.stringify({
-          model: "gpt-3.5-turbo",
-          messages: [{
-            role: "user",
-            content: `Please analyze related keywords for: ${keyword}
-Provide result in this format (5 keywords):
-
-Keyword: diet
-CPC: $1.25
-Blog Volume: 11,000 posts
-Entry Score: 0.81`
-          }]
-        })
-      });
+      const response = await fetch("https://mg-solutions-dashboard.onrender.com/api/keywords", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ keyword })
+});
 
       const data = await response.json();
       const text = data.choices?.[0]?.message?.content || "No result found.";
