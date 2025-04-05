@@ -47,3 +47,7 @@ Entry Score: 0.81
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+app.get("/", (req, res) => {
+  res.send("Keyword Analysis API is running. Please use the frontend at https://zocuna.com.");
+});
